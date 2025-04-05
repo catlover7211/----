@@ -44,3 +44,8 @@ Node.js v23.10.0
 {"cpu_cores":8,"level":"info","memory":"16 GB","message":"服務啟動信息","node_version":"v23.10.0","pid":75534,"platform":"darwin","port":3001,"service":"search-engine-service","timestamp":"2025-04-05 23:02:55","version":"1.4.0"}
 {"level":"info","message":"搜索引擎服務運行在端口 3001","service":"search-engine-service","timestamp":"2025-04-05 23:02:58"}
 {"cpu_cores":8,"level":"info","memory":"16 GB","message":"服務啟動信息","node_version":"v23.10.0","pid":75558,"platform":"darwin","port":3001,"service":"search-engine-service","timestamp":"2025-04-05 23:02:58","version":"1.4.0"}
+{"level":"info","message":"搜索引擎服務運行在端口 3001","service":"search-engine-service","timestamp":"2025-04-05 23:10:20"}
+{"cpu_cores":8,"level":"info","memory":"16 GB","message":"服務啟動信息","node_version":"v23.10.0","pid":78037,"platform":"darwin","port":3001,"service":"search-engine-service","timestamp":"2025-04-05 23:10:20","version":"1.4.0"}
+{"level":"info","message":"搜索引擎服務運行在端口 3001","service":"search-engine-service","timestamp":"2025-04-05 23:10:24"}
+{"cpu_cores":8,"level":"info","memory":"16 GB","message":"服務啟動信息","node_version":"v23.10.0","pid":78062,"platform":"darwin","port":3001,"service":"search-engine-service","timestamp":"2025-04-05 23:10:24","version":"1.4.0"}
+{"level":"info","message":"執行多引擎搜索: 台灣, 語言: zh-TW","service":"search-engine-service","timestamp":"2025-04-05 23:11:12"}

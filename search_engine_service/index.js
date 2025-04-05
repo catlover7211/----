@@ -927,6 +927,139 @@ if (enableCluster && cluster.isMaster) {
         }
     });
     
+    // 新增多引擎搜索端點
+    app.post('/search/all', async (req, res) => {
+        const startTime = performance.now();
+        try {
+            const { keyword, limit = 10, lang = 'zh-TW' } = req.body;
+            
+            requestsServed++;
+            
+            if (!keyword) {
+                return res.status(400).json({ 
+                    error: '關鍵字不能為空',
+                    success: false 
+                });
+            }
+            
+            // 檢查快取
+            const cacheKey = `all:${keyword}:${lang}:${limit}`;
+            const cachedResult = searchCache.get(cacheKey);
+            
+            if (cachedResult) {
+                logger.info(`從快取中返回多引擎搜索結果: ${keyword}`);
+                return res.json({
+                    ...cachedResult,
+                    cache_hit: true,
+                    response_time: Math.round(performance.now() - startTime)
+                });
+            }
+            
+            logger.info(`執行多引擎搜索: ${keyword}, 語言: ${lang}`);
+            searchesPerformed++;
+            
+            // 使用 searchMultipleEngines 進行搜索
+            const searchResult = await searchEngineTool.searchMultipleEngines(
+                keyword, 
+                ['google', 'bing', 'yahoo', 'duckduckgo'], 
+                { language: lang, maxResults: limit }
+            );
+            
+            // 合併所有引擎的結果
+            let allResults = [];
+            let successEngines = [];
+            let failedEngines = [];
+            
+            searchResult.forEach(result => {
+                if (result.success && result.results.length > 0) {
+                    successEngines.push(result.engine);
+                    allResults = allResults.concat(result.results);
+                } else {
+                    failedEngines.push(result.engine);
+                }
+            });
+            
+            // 移除重複結果 (基於 URL)
+            const uniqueUrls = new Set();
+            allResults = allResults.filter(item => {
+                if (!item.href || uniqueUrls.has(item.href)) return false;
+                uniqueUrls.add(item.href);
+                return true;
+            });
+            
+            if (allResults.length === 0) {
+                const responseTime = performance.now() - startTime;
+                updateAvgResponseTime(responseTime);
+                
+                return res.json({
+                    success: true,
+                    engine: 'All',
+                    results: [],
+                    total_results: 0,
+                    message: '沒有找到結果',
+                    response_time: Math.round(responseTime)
+                });
+            }
+            
+            // 過濾並格式化結果 - 使用並行處理提升效能
+            const formattedResults = await Promise.all(allResults.map(async item => ({
+                title: item.title || '無標題',
+                link: item.href || '',
+                snippet: item.abstract || '',
+                source: extractSourceFromUrl(item.href),
+                country: getCountryFromLang(lang),
+                language: lang,
+                engine: item.engine || 'unknown',
+                image_url: await fetchImageForArticle(item.href),
+                is_global: true,
+                timestamp: new Date().toISOString()
+            })));
+            
+            const responseTime = performance.now() - startTime;
+            updateAvgResponseTime(responseTime);
+            
+            const responseData = { 
+                success: true, 
+                engine: 'All', 
+                engines_used: successEngines,
+                engines_failed: failedEngines,
+                results: formattedResults,
+                total_results: formattedResults.length,
+                keyword,
+                page: 1,
+                per_page: limit,
+                total_pages: Math.ceil(formattedResults.length / limit),
+                response_time: Math.round(responseTime)
+            };
+            
+            // 存入快取
+            searchCache.set(cacheKey, responseData);
+            
+            // 同時獲取相關搜索建議
+            const suggestions = await fetchSearchSuggestions(keyword);
+            if (suggestions && suggestions.length > 0) {
+                responseData.related_searches = suggestions;
+            }
+            
+            res.json(responseData);
+        } catch (error) {
+            const responseTime = performance.now() - startTime;
+            updateAvgResponseTime(responseTime);
+            
+            logger.error(`多引擎搜索錯誤: ${error.message}`, { 
+                stack: error.stack,
+                keyword: req.body?.keyword,
+                lang: req.body?.lang
+            });
+            
+            res.status(500).json({ 
+                error: `多引擎搜索錯誤: ${error.message}`,
+                success: false,
+                response_time: Math.round(responseTime)
+            });
+        }
+    });
+    
     // 更新平均回應時間
     function updateAvgResponseTime(newResponseTime) {
         if (avgResponseTime === 0) {
