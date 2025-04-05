@@ -14,6 +14,8 @@
     "axios": "^1.8.4",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "morgan": "^1.10.0",
+    "node-cache": "^5.1.2",
     "search-engine-tool": "^1.0.4"
   }
 }
