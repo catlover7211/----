@@ -112,9 +112,53 @@ NEWS_SOURCES = {
         "date_selector": ".news-time",
         "image_selector": ".news-img img",
         "base_url": ""
+    },
+    "中時新聞網": {
+        "search_url": "https://www.chinatimes.com/search/{}",
+        "article_selector": ".articlebox-compact",
+        "title_selector": "h3 a",
+        "link_selector": "h3 a",
+        "date_selector": ".meta-info time",
+        "image_selector": "img.photo",
+        "base_url": "https://www.chinatimes.com"
+    },
+    "蘋果新聞網": {
+        "search_url": "https://tw.appledaily.com/search/result?querystrS={}",
+        "article_selector": ".story-card",
+        "title_selector": "a",
+        "link_selector": "a",
+        "date_selector": ".timestamp",
+        "image_selector": "img",
+        "base_url": "https://tw.appledaily.com"
+    },
+    "公視新聞網": {
+        "search_url": "https://news.pts.org.tw/search/{}",
+        "article_selector": ".article-list li",
+        "title_selector": "a",
+        "link_selector": "a",
+        "date_selector": ".datetime",
+        "image_selector": "img",
+        "base_url": "https://news.pts.org.tw"
+    },
+    "東森新聞": {
+        "search_url": "https://www.ebc.net.tw/Search/Result?key={}",
+        "article_selector": ".news-list-item",
+        "title_selector": "a",
+        "link_selector": "a",
+        "date_selector": ".time",
+        "image_selector": "img",
+        "base_url": "https://www.ebc.net.tw"
+    },
+    "民視新聞": {
+        "search_url": "https://www.ftvnews.com.tw/search/{}",
+        "article_selector": ".news-list li",
+        "title_selector": "a",
+        "link_selector": "a",
+        "date_selector": ".time",
+        "image_selector": "img",
+        "base_url": "https://www.ftvnews.com.tw"
     }
 }
-
 # 使用LRU快取來緩存搜索結果
 @lru_cache(maxsize=100)
 def cached_search_results(keyword, engine, limit, lang, region, page, timestamp):
