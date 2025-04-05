@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "compression": "^1.8.0",
-    "express-rate-limit": "^7.5.0",
-    "helmet": "^8.1.0",
-    "winston": "^3.17.0"
-  }
-}

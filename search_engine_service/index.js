@@ -86,6 +86,8 @@ if (enableCluster && cluster.isMaster) {
         logger.info('啟動新的工作進程...');
         cluster.fork();
     });
+    
+    // 主進程不需要導出 app，因為它不處理請求
 } else {
     const app = express();
     const PORT = process.env.PORT || 3001;
@@ -973,6 +975,7 @@ if (enableCluster && cluster.isMaster) {
             cpu_cores: numCPUs
         });
     });
+    
+    // 只在工作進程中導出 app
+    module.exports = app; // 導出供測試使用
 }
-
-module.exports = app; // 導出供測試使用
