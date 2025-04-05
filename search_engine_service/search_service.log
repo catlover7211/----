@@ -1,0 +1,28 @@
+
+> search_engine_service@1.0.0 start
+> node index.js
+
+node:internal/modules/cjs/loader:1408
+  throw err;
+  ^
+
+Error: Cannot find module 'axios'
+Require stack:
+- /Users/catlover/Documents/Code/ 新聞爬蟲/search_engine_service/index.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1405:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Function._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1491:12)
+    at require (node:internal/modules/helpers:135:16)
+    at Object.<anonymous> (/Users/catlover/Documents/Code/ 新聞爬蟲/search_engine_service/index.js:4:15)
+    at Module._compile (node:internal/modules/cjs/loader:1734:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/catlover/Documents/Code/ 新聞爬蟲/search_engine_service/index.js'
+  ]
+}
+
+Node.js v23.10.0

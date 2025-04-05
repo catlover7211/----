@@ -1,0 +1,63 @@
+2025-04-05 22:47:48,357 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:47:48,417 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.50.192:5001
+2025-04-05 22:47:48,417 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-05 22:47:48,418 - werkzeug - INFO -  * Restarting with stat
+2025-04-05 22:47:51,576 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:47:51,595 - werkzeug - WARNING -  * Debugger is active!
+2025-04-05 22:47:51,607 - werkzeug - INFO -  * Debugger PIN: 143-743-716
+2025-04-05 22:48:03,829 - __main__ - INFO - 搜索引擎服務未運行，正在啟動...
+2025-04-05 22:48:06,837 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:48:06,852 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:06] "GET /?q=usa&type=global HTTP/1.1" 200 -
+2025-04-05 22:48:08,218 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:08] "GET /static/style.css HTTP/1.1" 200 -
+2025-04-05 22:48:09,496 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:09] "[33mGET /static/hero-image.svg HTTP/1.1[0m" 404 -
+2025-04-05 22:48:09,503 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:09] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+2025-04-05 22:48:09,517 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:09] "GET /trending HTTP/1.1" 200 -
+2025-04-05 22:48:12,526 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:48:12,528 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:12] "GET /search-service-status HTTP/1.1" 200 -
+2025-04-05 22:48:24,697 - __main__ - INFO - 收到搜索請求: 關鍵字=中國, 類型=local, 頁碼=1
+2025-04-05 22:48:24,857 - __main__ - ERROR - 從 TVBS新聞網 抓取新聞時出錯: 404 Client Error: Not Found for url: https://news.tvbs.com.tw/station/search?keyword=%E4%B8%AD%E5%9C%8B
+2025-04-05 22:48:24,938 - __main__ - ERROR - 從 新頭殼 抓取新聞時出錯: 404 Client Error: Not Found for url: https://newtalk.tw/search/result?keyword=%E4%B8%AD%E5%9C%8B
+2025-04-05 22:48:27,105 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:27] "POST /search HTTP/1.1" 200 -
+2025-04-05 22:48:48,480 - __main__ - INFO - 收到搜索請求: 關鍵字=中國, 類型=global, 頁碼=1
+2025-04-05 22:48:48,480 - __main__ - INFO - 搜索關鍵詞：中國 (編碼後: %E4%B8%AD%E5%9C%8B)
+2025-04-05 22:48:48,481 - __main__ - WARNING - 搜索引擎服務未運行 (HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /healthcheck (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102b74590>: Failed to establish a new connection: [Errno 61] Connection refused')))，嘗試啟動...
+2025-04-05 22:48:51,489 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:48:51,490 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:48:51,496 - __main__ - WARNING - 搜索請求失敗 (嘗試 1/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102d97860>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:48:52,497 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:48:52,518 - __main__ - WARNING - 搜索請求失敗 (嘗試 2/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102e28320>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:48:53,525 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:48:53,529 - __main__ - WARNING - 搜索請求失敗 (嘗試 3/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102e287d0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:48:54,530 - __main__ - WARNING - 所有API請求重試都失敗，使用模擬搜索作為備份
+2025-04-05 22:48:54,531 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:48:54] "POST /search HTTP/1.1" 200 -
+2025-04-05 22:49:27,879 - __main__ - INFO - 收到搜索請求: 關鍵字=中國, 類型=all, 頁碼=1
+2025-04-05 22:49:27,879 - __main__ - INFO - 搜索關鍵詞：中國 (編碼後: %E4%B8%AD%E5%9C%8B)
+2025-04-05 22:49:27,881 - __main__ - WARNING - 搜索引擎服務未運行 (HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /healthcheck (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102b76390>: Failed to establish a new connection: [Errno 61] Connection refused')))，嘗試啟動...
+2025-04-05 22:49:30,889 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:49:30,890 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:49:30,896 - __main__ - WARNING - 搜索請求失敗 (嘗試 1/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102b5b710>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:49:31,901 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:49:31,906 - __main__ - WARNING - 搜索請求失敗 (嘗試 2/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102b5a9c0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:49:32,906 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:49:32,909 - __main__ - WARNING - 搜索請求失敗 (嘗試 3/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102e28e00>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:49:33,913 - __main__ - WARNING - 所有API請求重試都失敗，使用模擬搜索作為備份
+2025-04-05 22:49:34,058 - __main__ - ERROR - 從 TVBS新聞網 抓取新聞時出錯: 404 Client Error: Not Found for url: https://news.tvbs.com.tw/station/search?keyword=%E4%B8%AD%E5%9C%8B
+2025-04-05 22:49:34,109 - __main__ - ERROR - 從 新頭殼 抓取新聞時出錯: 404 Client Error: Not Found for url: https://newtalk.tw/search/result?keyword=%E4%B8%AD%E5%9C%8B
+2025-04-05 22:49:35,717 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:49:35] "POST /search HTTP/1.1" 200 -
+2025-04-05 22:50:12,091 - __main__ - INFO - 收到搜索請求: 關鍵字=china, 類型=all, 頁碼=1
+2025-04-05 22:50:12,091 - __main__ - INFO - 搜索關鍵詞：china (編碼後: china)
+2025-04-05 22:50:12,094 - __main__ - WARNING - 搜索引擎服務未運行 (HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /healthcheck (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102e2b3b0>: Failed to establish a new connection: [Errno 61] Connection refused')))，嘗試啟動...
+2025-04-05 22:50:15,104 - __main__ - INFO - 搜索引擎服務已啟動
+2025-04-05 22:50:15,105 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:50:15,110 - __main__ - WARNING - 搜索請求失敗 (嘗試 1/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1039d7530>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:50:16,115 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:50:16,119 - __main__ - WARNING - 搜索請求失敗 (嘗試 2/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1039d6b40>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:50:17,123 - __main__ - INFO - 發送請求到搜索引擎服務: http://localhost:3001/search/all
+2025-04-05 22:50:17,129 - __main__ - WARNING - 搜索請求失敗 (嘗試 3/3): HTTPConnectionPool(host='localhost', port=3001): Max retries exceeded with url: /search/all (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1039d74a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-04-05 22:50:18,134 - __main__ - WARNING - 所有API請求重試都失敗，使用模擬搜索作為備份
+2025-04-05 22:50:18,271 - __main__ - ERROR - 從 TVBS新聞網 抓取新聞時出錯: 404 Client Error: Not Found for url: https://news.tvbs.com.tw/station/search?keyword=china
+2025-04-05 22:50:18,405 - __main__ - ERROR - 從 新頭殼 抓取新聞時出錯: 404 Client Error: Not Found for url: https://newtalk.tw/search/result?keyword=china
+2025-04-05 22:50:19,743 - werkzeug - INFO - 127.0.0.1 - - [05/Apr/2025 22:50:19] "POST /search HTTP/1.1" 200 -
