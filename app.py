@@ -25,9 +25,15 @@ def search():
     
     try:
         response = requests.get(url, headers=headers, params=querystring)
-        return jsonify(response.json())
+        response_data = response.json()
+        
+        # 記錄API響應的數據結構，以便調試
+        print("API Response Structure:", json.dumps(response_data, indent=2))
+        
+        return jsonify(response_data)
     except Exception as e:
+        print(f"Error occurred: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == '__main__': 
+    app.run(debug=True, host="0.0.0.0" , port=4000)
