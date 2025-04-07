@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新聞搜尋</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>新聞搜尋工具</h1>
+        <div class="search-box">
+            <input type="text" id="searchQuery" placeholder="輸入搜尋關鍵字...">
+            <select id="searchLimit">
+                <option value="5">5 結果</option>
+                <option value="10" selected>10 結果</option>
+                <option value="20">20 結果</option>
+                <option value="30">30 結果</option>
+            </select>
+            <button id="searchButton">搜尋</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+        
+        <div class="results" id="results">
+            <!-- 搜尋結果將動態顯示在這裡 -->
+        </div>
+        
+        <div class="related-keywords" id="related-keywords">
+            <h3>相關關鍵字:</h3>
+            <div class="keywords-list" id="keywords-list"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
