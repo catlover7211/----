@@ -3,37 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新聞搜尋</title>
+    <title>台灣新聞儀表板</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>新聞搜尋工具</h1>
-        <div class="search-box">
-            <input type="text" id="searchQuery" placeholder="輸入搜尋關鍵字...">
-            <select id="searchLimit">
-                <option value="5">5 結果</option>
-                <option value="10" selected>10 結果</option>
-                <option value="20">20 結果</option>
-                <option value="30">30 結果</option>
-            </select>
-            <button id="searchButton">搜尋</button>
+    <header>
+        <h1>新聞搜尋系統</h1>
+        <div class="search-container">
+            <form action="/search" method="get">
+                <input type="text" id="searchInput" name="q" placeholder="請輸入關鍵字搜尋新聞..." value="{{ search_query|default('') }}">
+                <button type="submit" id="searchButton">搜尋</button>
+            </form>
         </div>
-        
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-        </div>
-        
-        <div class="results" id="results">
-            <!-- 搜尋結果將動態顯示在這裡 -->
-        </div>
-        
-        <div class="related-keywords" id="related-keywords">
-            <h3>相關關鍵字:</h3>
-            <div class="keywords-list" id="keywords-list"></div>
-        </div>
+    </header>
+    
+    <div class="stats">
+        <p>總共找到 <span id="totalResults">{{ news_data.totalResults }}</span> 則新聞</p>
+        <p>API 狀態: <span class="status-{{ news_data.status }}">{{ news_data.status }}</span></p>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <div class="pagination">
+        <button id="prevPage" disabled>上一頁</button>
+        <span id="currentPage">第 1 頁</span>
+        <button id="nextPage">下一頁</button>
+    </div>
+
+    <div class="news-container" id="newsContainer">
+        {% if news_data.articles|length == 0 and not search_query %}
+        <div class="welcome-message">
+            <p>請在上方輸入框輸入關鍵字以搜尋相關新聞</p>
+        </div>
+        {% elif news_data.articles|length == 0 and search_query %}
+        <div class="no-results">
+            <p>沒有找到與「{{ search_query }}」相關的新聞</p>
+        </div>
+        {% endif %}
+        <!-- 將在 JavaScript 中動態生成新聞卡片 -->
+    </div>
+
+    <template id="newsCardTemplate">
+        <div class="news-card">
+            <div class="news-image">
+                <img src="" alt="新聞圖片">
+            </div>
+            <div class="news-content">
+                <h2 class="news-title"></h2>
+                <p class="news-source"><span class="source-name"></span> • <span class="publish-date"></span></p>
+                <p class="news-description"></p>
+                <a href="#" class="read-more" target="_blank">閱讀更多</a>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // 將 Python 傳來的 JSON 數據傳遞給 JavaScript
+        const newsData = {{ news_data|tojson }};
+        
+        // 初始化頁面和事件監聽器
+        document.addEventListener('DOMContentLoaded', function() {
+            const articlesPerPage = 10;
+            let currentPage = 1;
+            const articles = newsData.articles;
+            let filteredArticles = [...articles];
+            
+            const newsContainer = document.getElementById('newsContainer');
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+            const currentPageSpan = document.getElementById('currentPage');
+            const searchInput = document.getElementById('searchInput');
+            const template = document.getElementById('newsCardTemplate');
+            
+            // 顯示新聞文章
+            function displayNews(page) {
+                // 如果沒有搜尋結果，不需要清空容器，因為我們已經在HTML中顯示了提示
+                if (filteredArticles.length === 0) {
+                    return;
+                }
+                
+                // 清空現有內容
+                newsContainer.innerHTML = '';
+                
+                const startIndex = (page - 1) * articlesPerPage;
+                const endIndex = startIndex + articlesPerPage;
+                const pageArticles = filteredArticles.slice(startIndex, endIndex);
+                
+                pageArticles.forEach(article => {
+                    const clone = template.content.cloneNode(true);
+                    
+                    // 設置圖片
+                    const img = clone.querySelector('.news-image img');
+                    if (article.urlToImage) {
+                        img.src = article.urlToImage;
+                    } else {
+                        img.src = "https://via.placeholder.com/300x200?text=無圖片";
+                    }
+                    
+                    // 設置標題和內容
+                    clone.querySelector('.news-title').textContent = article.title;
+                    clone.querySelector('.source-name').textContent = article.source.name || '未知來源';
+                    
+                    // 格式化日期
+                    const publishDate = new Date(article.publishedAt);
+                    const formattedDate = publishDate.toLocaleDateString('zh-TW');
+                    clone.querySelector('.publish-date').textContent = formattedDate;
+                    
+                    clone.querySelector('.news-description').textContent = article.description || '無描述';
+                    
+                    // 設置閱讀更多連結
+                    const link = clone.querySelector('.read-more');
+                    link.href = article.url;
+                    
+                    newsContainer.appendChild(clone);
+                });
+                
+                // 更新分頁狀態
+                currentPageSpan.textContent = `第 ${page} 頁`;
+                prevPageBtn.disabled = page === 1;
+                nextPageBtn.disabled = endIndex >= filteredArticles.length;
+            }
+            
+            // 只有在有文章時才顯示第一頁
+            if(filteredArticles.length > 0) {
+                displayNews(currentPage);
+            }
+            
+            // 分頁事件處理
+            prevPageBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayNews(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            nextPageBtn.addEventListener('click', () => {
+                const maxPages = Math.ceil(filteredArticles.length / articlesPerPage);
+                if (currentPage < maxPages) {
+                    currentPage++;
+                    displayNews(currentPage);
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            // 客戶端搜尋功能（只過濾已載入的新聞）
+            searchInput.addEventListener('input', function(e) {
+                // 防止在這裡處理，因為我們現在使用表單提交到伺服器
+                // 如果你想在客戶端也實現即時過濾，可以保留此功能
+            });
+        });
+    </script>
 </body>
 </html>

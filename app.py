@@ -1,39 +1,23 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request
 import requests
-import json
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # 不再預設搜尋任何內容，初始頁面不展示新聞
+    return render_template('index.html', news_data={"articles": [], "totalResults": 0, "status": "ok"})
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET'])
 def search():
-    data = request.json
-    query = data.get('query', 'Nike')
-    limit = data.get('limit', '10')
+    query = request.args.get('q', '')
+    if not query:
+        return render_template('index.html', news_data={"articles": [], "totalResults": 0, "status": "ok"})
     
-    url = "https://google-search74.p.rapidapi.com/"
-    
-    querystring = {"query": query, "limit": limit, "related_keywords":"true"}
-    
-    headers = {
-        "x-rapidapi-key": "f93d6a4a26msh3bcff115e89c615p1b84efjsn9bf7711a6ffb",
-        "x-rapidapi-host": "google-search74.p.rapidapi.com"
-    }
-    
-    try:
-        response = requests.get(url, headers=headers, params=querystring)
-        response_data = response.json()
-        
-        # 記錄API響應的數據結構，以便調試
-        print("API Response Structure:", json.dumps(response_data, indent=2))
-        
-        return jsonify(response_data)
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+    url = f'https://newsapi.org/v2/everything?q={query}&apiKey=2110528690ec40658a6437f045a76755'
+    response = requests.get(url)
+    news_data = response.json()
+    return render_template('index.html', news_data=news_data, search_query=query)
 
-if __name__ == '__main__': 
-    app.run(debug=True, host="0.0.0.0" , port=4000)
+if __name__ == '__main__':
+    app.run(debug=True,host= "0.0.0.0", port=4000)
